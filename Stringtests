@@ -1,0 +1,56 @@
+Description:
+
+Your task is to sort a given string. Each word in the String will contain a single number. This number is the position the word should have in the result.
+
+Note: Numbers can be from 1 to 9. So 1 will be the first word (not 0).
+
+If the input String is empty, return an empty String. The words in the input String will only contain valid consecutive numbers.
+
+For an input: "is2 Thi1s T4est 3a" the function should return "Thi1s is2 3a T4est"
+
+
+my code：
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.HashMap;
+import java.lang.String;
+
+public class Order {
+  public static String order(String words) {
+    // ...
+    if(words.length() == 0 && words == null){
+        return "";
+    }
+    String num = "[^1-9]";
+    Pattern p = Pattern.compile(num);
+    String [] strList = words.split(" ");
+    String [] number = new String[strList.length];
+    HashMap map = new HashMap();
+    StringBuffer finalStr = new StringBuffer("");
+    String temp = "";
+    int count = 0;
+    for(int i=0;i<strList.length;i++){
+    	Matcher  m = p.matcher(strList[i]);
+    	number[i] = m.replaceAll("");
+        map.put(m.replaceAll(""),strList[i]);
+      }
+     for(int i = 0; i<number.length;i++){
+        for (int j = i + 1; j < number.length; j++) { 
+            if(Integer.valueOf(number[i]) > Integer.valueOf(number[j])){
+               temp = number[j];
+               number[j] = number[i];
+               number[i] = temp;
+             }
+        }
+     }
+    for (String x:number){
+    count++;
+    if(count==number.length){
+       finalStr.append(map.get(x));
+       continue;
+    }
+      finalStr.append(map.get(x)+" ");
+    }
+    return finalStr.toString();
+  }
+}
